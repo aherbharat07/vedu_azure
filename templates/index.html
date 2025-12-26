@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Calculator</title>
+</head>
+<body style="text-align: center; font-family: Arial;">
+    <h2>Calculator</h2>
+
+    <form id="calcForm">
+        <input type="text" name="x" placeholder="Enter first number" required><br><br>
+        <input type="text" name="y" placeholder="Enter second number" required><br><br>
+
+        <select name="operation" required>
+            <option value="">Select Operation</option>
+            <option value="addition">Addition</option>
+            <option value="substraction">Subtraction</option>
+            <option value="multiplication">Multiplication</option>
+            <option value="division">Division</option>
+        </select><br><br>
+
+        <button type="submit">Calculate</button>
+    </form>
+
+    <h3 id="result"></h3>
+
+    <script>
+        const form = document.getElementById('calcForm');
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/calculator', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (result.status === "success") {
+                document.getElementById('result').innerText = "Result: " + result.result;
+            } else {
+                document.getElementById('result').innerText = "Error in calculation.";
+            }
+        });
+    </script>
+</body>
+</html>
